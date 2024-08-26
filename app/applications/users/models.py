@@ -4,8 +4,6 @@ from sqlalchemy import Column, Integer, String
 from applications.orders.models import Order
 
 
-
-
 class User(Base):
     __tablename__ = 'users'
 
