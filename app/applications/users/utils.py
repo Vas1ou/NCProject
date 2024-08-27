@@ -39,10 +39,9 @@ async def get_current_user(db: AsyncSession = Depends(get_db), token: str = Depe
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub')
-        decoded_payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         # Извлекаем время истечения срока действия токена
-        exp_timestamp = decoded_payload.get("exp")
+        exp_timestamp = payload.get("exp")
 
         # Конвертируем время в формат datetime
         exp_time = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
@@ -62,6 +61,6 @@ async def get_current_user(db: AsyncSession = Depends(get_db), token: str = Depe
     user = await get_user(db, username=token_data.username)
     if user is None:
         raise credentials_exception
-    print(user)
+
     return user
 
