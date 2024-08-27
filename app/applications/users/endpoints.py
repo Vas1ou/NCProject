@@ -9,7 +9,7 @@ from .models import User
 from .crud import get_user
 from db.sessions import get_db
 from utils.hash import get_password_hash
-from .utils import authenticate_user, create_access_token
+from .utils import authenticate_user, create_access_token, get_current_user
 from .application_settings import ACCESS_TOKEN_EXPIRE_MINUTES
 
 router = APIRouter()
@@ -42,3 +42,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data={'sub': user.username}, expires_delta=access_token_expires)
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get('/me', response_model=UserRead)
+async def read_user(current_user: UserRead = Depends(get_current_user)):
+    return current_user
