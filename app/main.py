@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from core.config import settings
 from applications.users.endpoints import router as users_routers
+from applications.orders.endpoints import router as orders_routers
 from db.sessions import init_db
 from contextlib import asynccontextmanager
 
@@ -14,6 +15,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 # Подключение маршрутов
 app.include_router(users_routers, prefix='/users', tags=['users'])
+app.include_router(orders_routers, prefix='/orders', tags=['orders'])
 
 if __name__ == "__main__":
     import uvicorn
